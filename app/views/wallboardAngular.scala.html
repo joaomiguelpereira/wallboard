@@ -1,1 +1,37 @@
-Hello wall board
+@*function parameters*@
+@(title: String)
+<!DOCTYPE html>
+<html lang="en" ng-app="htmlBoard">
+<head>
+    <meta charset="utf-8">
+    <title> @title </title>
+    <link rel="stylesheet" href="@routes.Assets.at("htmlBoard/app/css/app.css")"/>
+</head>
+<body>
+    <div ng-controller="HtmlBoardAppController">
+        <ul>
+            <li ng:repeat="scrumboard in scrumBoards">
+                    {{scrumboard.name}}
+                <ul>
+                    <li ng:repeat="sprint in scrumboard.sprints">
+                            {{sprint.name}}
+
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    <div> Angular seed app: v <span app-version></span> </div>
+
+        <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+  -->
+    <script src="@routes.Assets.at("htmlBoard/app/lib/angular/angular.js")"></script>
+    <script src="@routes.Assets.at("htmlBoard/app/js/app.js")"></script>
+    <script src="@routes.Assets.at("htmlBoard/app/js/services.js")"></script>
+    <script src="@routes.Assets.at("htmlBoard/app/js/controllers.js")"></script>
+    <script src="@routes.Assets.at("htmlBoard/app/js/filters.js")"></script>
+    <script src="@routes.Assets.at("htmlBoard/app/js/directives.js")"></script>
+</body>
+</html>

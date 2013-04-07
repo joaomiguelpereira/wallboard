@@ -1,10 +1,10 @@
 package controllers;
 
 import models.*;
+import play.cache.Cache;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.wallboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,44 @@ public class Wallboard extends Controller {
         scrumBoardIds.add("10");
     }
 
+    public static Result htmlWallboard() {
+        return ok(views.html.wallboardAngular.render("title"));
+
+    }
+
     public static Result wallboard() {
 
         BambooBuild build = new BambooBuild();
+
+        WallboardData wallBoardData = null;
+        try {
+            wallBoardData = getWallBoard();
+        } catch (Exception e) {
+            return internalServerError(e.getLocalizedMessage());
+        }
+
+        return ok(Json.toJson(wallBoardData));
+    }
+
+    private static WallboardData getWallBoard() throws Exception {
+
+        if (Cache.get("wallboard") != null) {
+            Object cachedObject = Cache.get("wallboard");
+            if (cachedObject instanceof WallboardData) {
+                play.Logger.debug("Returning cahced instance of Wallboard Data");
+                return (WallboardData) cachedObject;
+            }
+        }
+
+
+        WallboardData wallboardData = buildWallboardData();
+        Cache.set("wallboard",wallboardData,60*10);
+        return wallboardData;
+
+    }
+
+    private static WallboardData buildWallboardData() throws Exception {
+
 
         //Create a Server Configuration object, holding stuff for Jira, Bamboo, Sonar, Etc
         ServerConfiguration serverConfiguration = PlayBasedServerConfiguration.newConfiguration();
@@ -42,7 +77,7 @@ public class Wallboard extends Controller {
             jiraServer = new JiraServerFactory().create(serverConfiguration);
         } catch (JiraServerException e) {
             play.Logger.error("Error: ", e);
-            return internalServerError(e.getLocalizedMessage());
+            throw new Exception(e);
         }
 
 
@@ -53,10 +88,11 @@ public class Wallboard extends Controller {
             scrumBoards = new ScrumBoardBuilder().withIds(scrumBoardIds).with(config).build();
         } catch (ScrumBoardException e) {
             play.Logger.error("Error", e);
-            return internalServerError(e.toString());
+            throw new Exception(e);
         }
 
-        return ok(Json.toJson(new WallboardData(scrumBoards)));
+        return new WallboardData(scrumBoards);
     }
+
 }
 
