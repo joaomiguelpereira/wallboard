@@ -8,4 +8,9 @@ package models;
  * To change this template use File | Settings | File Templates.
  */
 public interface BambooServerConfiguration {
+    public String getBambooUrl();
+
+    public String getBambooUserName();
+
+    public String getBambooPassword();
 }
