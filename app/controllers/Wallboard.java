@@ -15,34 +15,35 @@ import java.util.List;
 public class Wallboard extends Controller {
 
 
-    private static List<String> scrumBoardIds = new ArrayList<String>();
+    private static String[] scrumBoardIds = {"6", "5", "7", "8", "17", "2", "9", "10"};
 
-    private static String bambooPlanKey = "EFRAME-DEF";
+    private static String[] bambooPlanKeys = {"EFRAME-DEF"};
 
     static {
-        scrumBoardIds.add("6");
-        scrumBoardIds.add("5");
-        scrumBoardIds.add("7");
-        scrumBoardIds.add("8");
-        scrumBoardIds.add("17");
-        scrumBoardIds.add("2");
-        scrumBoardIds.add("9");
-        scrumBoardIds.add("10");
     }
 
 
+    /**
+     * Renders the anglar application
+     *
+     * @return
+     */
     public static Result htmlWallboard() {
         return ok(views.html.wallboardAngular.render("title"));
 
     }
 
+    /**
+     * Return a JSON representation of a wall board
+     *
+     * @return
+     */
     public static Result wallboard() {
-
 
         WallboardData wallBoardData;
 
         try {
-            wallBoardData = getWallBoard();
+            wallBoardData = getOrBuildWallboard();
         } catch (Exception e) {
             return internalServerError(e.getLocalizedMessage());
         }
@@ -50,8 +51,9 @@ public class Wallboard extends Controller {
         return ok(Json.toJson(wallBoardData));
     }
 
-    private static WallboardData getWallBoard() throws Exception {
+    private static WallboardData getOrBuildWallboard() throws Exception {
 
+        //Try cache
         if (Cache.get("wallboard") != null) {
             Object cachedObject = Cache.get("wallboard");
             if (cachedObject instanceof WallboardData) {
@@ -61,29 +63,33 @@ public class Wallboard extends Controller {
         }
 
 
+        //ask further to construct a representation of a WallBoard
         WallboardData wallboardData = buildWallboardData();
+        //Save in cache for 10 minutes
         Cache.set("wallboard", wallboardData, 60 * 10);
         return wallboardData;
 
     }
 
+    /**
+     * Buil the wall board
+     *
+     * @return
+     * @throws Exception
+     */
     private static WallboardData buildWallboardData() throws Exception {
 
 
-        //Create a JiraServer Configuration
+        //Create a JiraServer
         JiraServerConfiguration jiraServerConfiguration = PlayBasedServerConfiguration.newJiraServerConfiguration();
-
-        //Create a BambooServer COnfiguration
-        BambooServerConfiguration bambooServerConfiguration = PlayBasedServerConfiguration.newBambooServerConfiguration();
-
-
-        BambooServer bambooServer = BambooServerFactory.create(bambooServerConfiguration);
-        BambooBuild bambooBuild = new BambooBuildBuilder().withPlanKey(bambooPlanKey).with(bambooServer).build();
-
         JiraServer jiraServer = new JiraServerFactory().create(jiraServerConfiguration);
 
+        //Create a BambooServer Server
+        BambooServerConfiguration bambooServerConfiguration = PlayBasedServerConfiguration.newBambooServerConfiguration();
+        BambooServer bambooServer = BambooServerFactory.create(bambooServerConfiguration);
 
 
+        //Get the list of scrumboards for the wallboard with a jira server
         List<ScrumBoard> scrumBoards;
 
         try {
@@ -93,7 +99,11 @@ public class Wallboard extends Controller {
             throw new Exception(e);
         }
 
-        return new WallboardData(scrumBoards);
+
+        List<BambooBuild> bambooBuilds = new BambooBuildBuilder().withPlanKey(bambooPlanKeys).with(bambooServer).build();
+
+
+        return new WallboardData(scrumBoards,bambooBuilds);
     }
 
 }

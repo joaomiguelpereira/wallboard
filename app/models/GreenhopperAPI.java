@@ -38,61 +38,18 @@ public class GreenhopperAPI {
 
 
     public String getSprintReport(String boardId, String sprintId) {
-        return jsonContentsOf(new SprintreportUrlBuilder(sprintReportUrl, boardId, sprintId));
+        return jiraServer.execute(new SprintreportUrlBuilder(sprintReportUrl, boardId, sprintId));
     }
 
     public String getSprintsForBoard(String id) {
-        return jsonContentsOf(new UrlBuilder(sprintsUrl, id));
+        return jiraServer.execute(new UrlBuilder(sprintsUrl, id));
     }
 
 
     public String getBoard(String id) {
-        return jsonContentsOf(new UrlBuilder(rapidViewUrl, id));
+        return jiraServer.execute(new UrlBuilder(rapidViewUrl, id));
     }
 
-    private String jsonContentsOf(UrlBuilder urlBuilder) {
-
-        String userName = jiraServer.getUserName();
-        String password = jiraServer.getPassword();
-
-
-       play.Logger.debug("Calling: "+urlBuilder.getUrl());
-        WS.WSRequestHolder wsreqHolder = WS.url(urlBuilder.getUrl()).setAuth(userName, password);
-
-        urlBuilder.setParameters(wsreqHolder);
-
-        F.Promise<WS.Response> promiseOfResult = wsreqHolder.get();
-
-        WS.Response response = promiseOfResult.get(3L, TimeUnit.MINUTES); //block here
-
-        //play.Logger.debug("Contents: " + response.getBody());
-
-        return response.getBody();
-
-    }
-
-    private class UrlBuilder {
-        protected String boardId;
-        protected String url;
-
-        public UrlBuilder(String url, String id) {
-            this.url = url ;
-            this.boardId = id;
-        }
-
-
-        public UrlBuilder() {
-        }
-
-        public String getUrl() {
-            return this.url+this.boardId;
-        }
-
-
-        public void setParameters(WS.WSRequestHolder wsreqHolder) {
-
-        }
-    }
 
     private class SprintreportUrlBuilder extends UrlBuilder {
 

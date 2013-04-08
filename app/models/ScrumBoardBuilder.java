@@ -1,6 +1,8 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,8 +20,8 @@ public class ScrumBoardBuilder {
 
     private JiraServer jiraServer;
 
-    public ScrumBoardBuilder withIds(List<String> scrumBoardIds) {
-        boardIds = new ArrayList<String>(scrumBoardIds);
+    public ScrumBoardBuilder withIds(String[] scrumBoardIds) {
+        boardIds = Arrays.asList(scrumBoardIds);
         return this;
     }
 
@@ -31,12 +33,12 @@ public class ScrumBoardBuilder {
 
     public List<ScrumBoard> build() throws ScrumBoardException {
 
-        List<ScrumBoard> boards = new ArrayList<ScrumBoard>();
 
         if (this.jiraServer == null || this.boardIds == null) {
             throw new ScrumBoardException("Jira Server and board ids required");
         }
 
+        List<ScrumBoard> boards = new ArrayList<ScrumBoard>();
         ScrumBoardAssembler assembler = new ScrumBoardAssembler(jiraServer);
 
         for (String id : this.boardIds) {

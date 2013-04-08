@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,11 +12,18 @@ import java.util.List;
  */
 public class WallboardData {
     private List<ScrumBoard> scrumBoards;
-    public WallboardData(List<ScrumBoard> scrumBoards) {
+    private List<BambooBuild> bambooBuilds;
+
+    public WallboardData(List<ScrumBoard> scrumBoards, List<BambooBuild> bambooBuilds) {
+        this.bambooBuilds = bambooBuilds;
         this.scrumBoards = scrumBoards;
     }
 
     public List<ScrumBoard> getScrumBoards() {
         return scrumBoards;
+    }
+
+    public List<BambooBuild> getBambooBuilds() {
+        return bambooBuilds;
     }
 }
