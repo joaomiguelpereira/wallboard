@@ -1,7 +1,5 @@
 package models;
 
-import java.net.URL;
-
 /**
  * Created with IntelliJ IDEA.
  * User: jpereira
@@ -15,7 +13,7 @@ public class JiraServer {
     private final String serverURL;
     private final GreenhopperAPI greenhopperAPI;
 
-    public JiraServer(ServerConfiguration serverConfiguration) {
+    public JiraServer(JiraServerConfiguration serverConfiguration) {
 
         this.serverURL = serverConfiguration.getJiraUrl();
         this.authentication = new UsernamePasswordAuthentication(serverConfiguration.getJiraUserName(),serverConfiguration.getJiraPassword());

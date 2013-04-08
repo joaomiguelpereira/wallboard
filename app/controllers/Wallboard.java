@@ -15,7 +15,9 @@ import java.util.List;
 public class Wallboard extends Controller {
 
 
-    private static List<String> scrumBoardIds = new ArrayList<>();
+    private static List<String> scrumBoardIds = new ArrayList<String>();
+
+    private static String bambooPlanKey = "EFRAME-DEF";
 
     static {
         scrumBoardIds.add("6");
@@ -28,6 +30,7 @@ public class Wallboard extends Controller {
         scrumBoardIds.add("10");
     }
 
+
     public static Result htmlWallboard() {
         return ok(views.html.wallboardAngular.render("title"));
 
@@ -35,9 +38,9 @@ public class Wallboard extends Controller {
 
     public static Result wallboard() {
 
-        BambooBuild build = new BambooBuild();
 
-        WallboardData wallBoardData = null;
+        WallboardData wallBoardData;
+
         try {
             wallBoardData = getWallBoard();
         } catch (Exception e) {
@@ -52,14 +55,14 @@ public class Wallboard extends Controller {
         if (Cache.get("wallboard") != null) {
             Object cachedObject = Cache.get("wallboard");
             if (cachedObject instanceof WallboardData) {
-                play.Logger.debug("Returning cahced instance of Wallboard Data");
+                play.Logger.debug("Returning cached instance of Wallboard Data");
                 return (WallboardData) cachedObject;
             }
         }
 
 
         WallboardData wallboardData = buildWallboardData();
-        Cache.set("wallboard",wallboardData,60*10);
+        Cache.set("wallboard", wallboardData, 60 * 10);
         return wallboardData;
 
     }
@@ -67,25 +70,24 @@ public class Wallboard extends Controller {
     private static WallboardData buildWallboardData() throws Exception {
 
 
-        //Create a Server Configuration object, holding stuff for Jira, Bamboo, Sonar, Etc
-        ServerConfiguration serverConfiguration = PlayBasedServerConfiguration.newConfiguration();
+        //Create a JiraServer Configuration
+        JiraServerConfiguration jiraServerConfiguration = PlayBasedServerConfiguration.newJiraServerConfiguration();
+
+        //Create a BambooServer COnfiguration
+        BambooServerConfiguration bambooServerConfiguration = PlayBasedServerConfiguration.newBambooServerConfiguration();
 
 
-        JiraServer jiraServer;
+        BambooServer bambooServer = BambooServerFactory.create(bambooServerConfiguration);
+        BambooBuild bambooBuild = new BambooBuildBuilder().withPlanKey(bambooPlanKey).with(bambooServer).build();
 
-        try {
-            jiraServer = new JiraServerFactory().create(serverConfiguration);
-        } catch (JiraServerException e) {
-            play.Logger.error("Error: ", e);
-            throw new Exception(e);
-        }
+        JiraServer jiraServer = new JiraServerFactory().create(jiraServerConfiguration);
 
 
-        ScrumBoardBuilderConfigurationObject config = new ScrumBoardBuilderConfigurationObject.Builder().with(jiraServer).build();
 
         List<ScrumBoard> scrumBoards;
+
         try {
-            scrumBoards = new ScrumBoardBuilder().withIds(scrumBoardIds).with(config).build();
+            scrumBoards = new ScrumBoardBuilder().withIds(scrumBoardIds).with(jiraServer).build();
         } catch (ScrumBoardException e) {
             play.Logger.error("Error", e);
             throw new Exception(e);

@@ -16,28 +16,28 @@ public class ScrumBoardBuilder {
     private List<String> boardIds;
 
 
-    private ScrumBoardBuilderConfigurationObject configObject;
+    private JiraServer jiraServer;
 
     public ScrumBoardBuilder withIds(List<String> scrumBoardIds) {
-        boardIds = new ArrayList<>(scrumBoardIds);
+        boardIds = new ArrayList<String>(scrumBoardIds);
         return this;
     }
 
-    public ScrumBoardBuilder with(ScrumBoardBuilderConfigurationObject config) {
-        this.configObject = config;
+    public ScrumBoardBuilder with(JiraServer jiraServer) {
+        this.jiraServer = jiraServer;
         return this;
 
     }
 
     public List<ScrumBoard> build() throws ScrumBoardException {
 
-        List<ScrumBoard> boards = new ArrayList<>();
+        List<ScrumBoard> boards = new ArrayList<ScrumBoard>();
 
-        if (this.configObject == null || this.boardIds == null) {
-            throw new ScrumBoardException("config and board ids required");
+        if (this.jiraServer == null || this.boardIds == null) {
+            throw new ScrumBoardException("Jira Server and board ids required");
         }
 
-        ScrumBoardAssembler assembler = new ScrumBoardAssembler(configObject.getJiraServer());
+        ScrumBoardAssembler assembler = new ScrumBoardAssembler(jiraServer);
 
         for (String id : this.boardIds) {
             ScrumBoard scrumBoard;

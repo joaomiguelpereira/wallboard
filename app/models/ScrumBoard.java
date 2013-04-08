@@ -12,7 +12,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ScrumBoard {
-    private List<Sprint> sprints = new ArrayList<>();
+    private List<Sprint> sprints = new ArrayList<Sprint>();
     private String id;
     private String name;
     private Boolean canEdit;

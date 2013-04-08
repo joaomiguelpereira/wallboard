@@ -1,8 +1,5 @@
 package models;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 /**
  * Created with IntelliJ IDEA.
  * User: jpereira
@@ -12,7 +9,7 @@ import java.net.URL;
  */
 public class JiraServerFactory {
 
-    public JiraServer create(ServerConfiguration serverConfiguration) throws JiraServerException {
+    public JiraServer create(JiraServerConfiguration serverConfiguration) {
 
         JiraServer server = new JiraServer(serverConfiguration);
 

@@ -7,7 +7,7 @@ package models;
  * Time: 14:35
  * To change this template use File | Settings | File Templates.
  */
-public interface ServerConfiguration {
+public interface JiraServerConfiguration {
 
     String getJiraUrl();
 
