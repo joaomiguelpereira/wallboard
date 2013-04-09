@@ -15,7 +15,7 @@
 
 package models;
 
-import models.bamboo.BambooBuild;
+import models.bamboo.BambooBuildPlan;
 import models.jira.ScrumBoard;
 
 import java.util.List;
@@ -29,10 +29,10 @@ import java.util.List;
  */
 public class WallboardData {
     private List<ScrumBoard> scrumBoards;
-    private List<BambooBuild> bambooBuilds;
+    private List<BambooBuildPlan> bambooBuildPlan;
 
-    public WallboardData(List<ScrumBoard> scrumBoards, List<BambooBuild> bambooBuilds) {
-        this.bambooBuilds = bambooBuilds;
+    public WallboardData(List<ScrumBoard> scrumBoards, List<BambooBuildPlan> plans) {
+        this.bambooBuildPlan = plans;
         this.scrumBoards = scrumBoards;
     }
 
@@ -40,7 +40,7 @@ public class WallboardData {
         return scrumBoards;
     }
 
-    public List<BambooBuild> getBambooBuilds() {
-        return bambooBuilds;
+    public List<BambooBuildPlan> getBambooBuildPlan() {
+        return bambooBuildPlan;
     }
 }

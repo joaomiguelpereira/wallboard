@@ -26,4 +26,8 @@ public class BambooBuildException extends Exception {
     public BambooBuildException(String message) {
         super(message);
     }
+
+    public BambooBuildException(Throwable tr) {
+        super(tr);
+    }
 }

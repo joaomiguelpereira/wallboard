@@ -15,25 +15,20 @@
 
 package models.bamboo;
 
+import java.util.List;
+
 /**
- * Created with IntelliJ IDEA.
- * User: jpereira
- * Date: 09-04-2013
- * Time: 0:51
- * To change this template use File | Settings | File Templates.
+ * A Plan with build
  */
-public class BambooBuildAssembler {
+public class BambooBuildPlan {
 
-    private BambooServer bambooServer;
+    private List<BambooBuild> builds;
 
-    public BambooBuildAssembler(BambooServer bambooServer) {
-        this.bambooServer = bambooServer;
+    public List<BambooBuild> getBuilds() {
+        return builds;
     }
 
-    public BambooBuild assemble(String bambooPlanKey) {
-        String json = bambooServer.bambooBuildAPI().getBuild(bambooPlanKey);
-
-        return null;
+    public void setBuilds(List<BambooBuild> builds) {
+        this.builds = builds;
     }
-
 }

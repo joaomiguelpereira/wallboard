@@ -15,6 +15,8 @@
 
 package models.bamboo;
 
+import models.AssemblingException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,33 +28,38 @@ import java.util.List;
  * Time: 5:02 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BambooBuildBuilder {
+public class BambooBuildPlanBuilder {
 
     private List<String> bambooBuildKeys;
     private BambooServer bambooServer;
 
-    public BambooBuildBuilder withPlanKey(String[] bambooBuildKeys) {
+    public BambooBuildPlanBuilder withPlanKeys(String[] bambooBuildKeys) {
         this.bambooBuildKeys = Arrays.asList(bambooBuildKeys);
         return this;
 
     }
 
-    public BambooBuildBuilder with(BambooServer bambooServer) {
+    public BambooBuildPlanBuilder with(BambooServer bambooServer) {
         this.bambooServer = bambooServer;
         return this;
     }
 
-    public List<BambooBuild> build() throws BambooBuildException {
+    public List<BambooBuildPlan> build() throws BambooBuildException {
         if (bambooServer == null || this.bambooBuildKeys == null) {
             throw new BambooBuildException("A bamboo server and bamboo plan keys are required");
         }
 
-        BambooBuildAssembler assembler = new BambooBuildAssembler(bambooServer);
+        BambooBuildPlanAssembler assembler = new BambooBuildPlanAssembler(bambooServer);
 
-        List<BambooBuild> builds = new ArrayList<>();
+        List<BambooBuildPlan> builds = new ArrayList<>();
 
         for (String bambooPlanKey : this.bambooBuildKeys) {
-            builds.add(assembler.assemble(bambooPlanKey));
+
+            try {
+                builds.add(assembler.assemble(bambooPlanKey));
+            } catch (AssemblingException e) {
+                throw new BambooBuildException(e);
+            }
         }
 
         return builds;

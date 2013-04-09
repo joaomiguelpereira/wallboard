@@ -42,7 +42,7 @@ public class Wallboard extends Controller {
 
 
     /**
-     * Renders the anglar application
+     * Renders the angular application
      *
      * @return
      */
@@ -116,10 +116,10 @@ public class Wallboard extends Controller {
         }
 
 
-        List<BambooBuild> bambooBuilds = new BambooBuildBuilder().withPlanKey(bambooPlanKeys).with(bambooServer).build();
+        List<BambooBuildPlan> bambooBuildPlans = new BambooBuildPlanBuilder().withPlanKeys(bambooPlanKeys).with(bambooServer).build();
 
 
-        return new WallboardData(scrumBoards, bambooBuilds);
+        return new WallboardData(scrumBoards, bambooBuildPlans);
     }
 
 }

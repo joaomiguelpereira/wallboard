@@ -18,7 +18,29 @@ package models.bamboo;
 /**
  *
  */
+
+
 public class BambooBuild {
 
+    private Integer number;
+    private String state;
+    private String key;
+
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getKey() {
+        return key;
+    }
 }
 
