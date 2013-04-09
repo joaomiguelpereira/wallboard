@@ -1,15 +1,13 @@
 package models;
 
+import models.bamboo.BambooServerConfiguration;
+import models.jira.JiraServerConfiguration;
 import play.Play;
 
 /**
- * Created with IntelliJ IDEA.
- * User: jpereira
- * Date: 07-04-2013
- * Time: 14:35
- * To change this template use File | Settings | File Templates.
+ * A ServerConfiguration Factory based on play configuration mechanism
  */
-public class PlayBasedServerConfiguration implements JiraServerConfiguration, BambooServerConfiguration {
+public class PlayBasedServerConfiguration {
 
     public static final String JIRA_URL = "jira.url";
     public static final String JIRA_USERNAME = "jira.username";
@@ -18,61 +16,26 @@ public class PlayBasedServerConfiguration implements JiraServerConfiguration, Ba
     public static final String BAMBOO_USERNAME = "bamboo.username";
     public static final String BAMBOO_PASSWORD = "bamboo.password";
 
-    private String jiraUrl;
-    private String jiraUserName;
-    private String jiraPassword;
-    private String bambooUrl;
-    private String bambooUserName;
-    private String bambooPassword;
-
-
     private PlayBasedServerConfiguration() {
-
     }
-
 
     public static JiraServerConfiguration newJiraServerConfiguration() {
-        PlayBasedServerConfiguration configuration = new PlayBasedServerConfiguration();
-        configuration.jiraUrl = Play.application().configuration().getString(JIRA_URL);
-        configuration.jiraUserName = Play.application().configuration().getString(JIRA_USERNAME);
-        configuration.jiraPassword = Play.application().configuration().getString(JIRA_PASSWORD);
+        JiraServerConfiguration.Builder builder = new JiraServerConfiguration.Builder();
 
-        return configuration;
+        builder.withUrl(Play.application().configuration().getString(JIRA_URL)).
+                withUserName(Play.application().configuration().getString(JIRA_USERNAME)).
+                withPassword(Play.application().configuration().getString(JIRA_PASSWORD)).build();
 
-
-    }
-
-    public String getJiraUrl() {
-        return jiraUrl;
-    }
-
-    public String getJiraUserName() {
-        return jiraUserName;
-    }
-
-    public String getJiraPassword() {
-        return jiraPassword;
-    }
-
-    public String getBambooUrl() {
-        return bambooUrl;
-    }
-
-    public String getBambooUserName() {
-        return bambooUserName;
-    }
-
-    public String getBambooPassword() {
-        return bambooPassword;
+        return builder.build();
     }
 
     public static BambooServerConfiguration newBambooServerConfiguration() {
-        PlayBasedServerConfiguration configuration = new PlayBasedServerConfiguration();
-        configuration.bambooUrl = Play.application().configuration().getString(BAMBOO_URL);
-        configuration.bambooUserName = Play.application().configuration().getString(BAMBOO_USERNAME);
-        configuration.bambooPassword = Play.application().configuration().getString(BAMBOO_PASSWORD);
+        BambooServerConfiguration.Builder builder = new BambooServerConfiguration.Builder();
+        builder.withUrl(Play.application().configuration().getString(BAMBOO_URL)).
+                withUserName(Play.application().configuration().getString(BAMBOO_USERNAME)).
+                withPassword(Play.application().configuration().getString(BAMBOO_PASSWORD)).build();
 
-        return configuration;
+        return builder.build();
 
     }
 }

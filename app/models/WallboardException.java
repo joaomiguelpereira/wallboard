@@ -7,12 +7,12 @@ package models;
  * Time: 3:53
  * To change this template use File | Settings | File Templates.
  */
-public class ScrumBoardException extends Throwable {
-    public ScrumBoardException(String s) {
+public class WallboardException extends Throwable {
+    public WallboardException(String s) {
         super(s);
     }
 
-    public ScrumBoardException(Throwable throwable) {
+    public WallboardException(Throwable throwable) {
         super(throwable);
     }
 }

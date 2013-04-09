@@ -1,8 +1,9 @@
-package models;
+package models.jira;
+
+import models.AssemblingException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,11 +32,11 @@ public class ScrumBoardBuilder {
 
     }
 
-    public List<ScrumBoard> build() throws ScrumBoardException {
+    public List<ScrumBoard> build() throws ScrumBoardBuilderException {
 
 
         if (this.jiraServer == null || this.boardIds == null) {
-            throw new ScrumBoardException("Jira Server and board ids required");
+            throw new ScrumBoardBuilderException("Jira Server and board ids required");
         }
 
         List<ScrumBoard> boards = new ArrayList<ScrumBoard>();
@@ -46,7 +47,7 @@ public class ScrumBoardBuilder {
             try {
                 scrumBoard = assembler.assemble(id);
             } catch (AssemblingException e) {
-                throw new ScrumBoardException(e);
+                throw new ScrumBoardBuilderException(e);
             }
             boards.add(scrumBoard);
 

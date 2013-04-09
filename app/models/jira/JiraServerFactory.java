@@ -1,4 +1,4 @@
-package models;
+package models.jira;
 
 /**
  * Created with IntelliJ IDEA.

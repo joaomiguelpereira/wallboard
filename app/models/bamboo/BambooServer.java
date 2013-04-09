@@ -1,11 +1,10 @@
-package models;
+package models.bamboo;
+
+import models.RestServer;
+import models.UsernamePasswordAuthentication;
 
 /**
- * Created with IntelliJ IDEA.
- * User: jpereira
- * Date: 4/8/13
- * Time: 4:30 PM
- * To change this template use File | Settings | File Templates.
+ * A simple Bamboo REST Server.
  */
 
 public class BambooServer extends RestServer {
@@ -14,7 +13,7 @@ public class BambooServer extends RestServer {
     private BambooServerConfiguration configuration;
 
     public BambooServer(BambooServerConfiguration serverConfiguration) {
-        super(new UsernamePasswordAuthentication(serverConfiguration.getBambooUserName(), serverConfiguration.getBambooPassword()));
+        super(new UsernamePasswordAuthentication(serverConfiguration.getUserName(), serverConfiguration.getPassword()));
         bambooBuildAPI = new BambooBuildAPI(this);
         this.configuration = serverConfiguration;
     }
@@ -24,6 +23,6 @@ public class BambooServer extends RestServer {
     }
 
     public String getBambooServerUrl() {
-        return this.configuration.getBambooUrl();
+        return this.configuration.getUrl();
     }
 }

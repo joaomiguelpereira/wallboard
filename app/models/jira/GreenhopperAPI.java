@@ -1,4 +1,6 @@
-package models;
+package models.jira;
+
+import models.UrlBuilder;
 
 import java.util.HashMap;
 import java.util.Map;

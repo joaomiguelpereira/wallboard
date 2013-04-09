@@ -1,6 +1,10 @@
 package controllers;
 
-import models.*;
+import models.PlayBasedServerConfiguration;
+import models.WallboardData;
+import models.WallboardException;
+import models.bamboo.*;
+import models.jira.*;
 import play.cache.Cache;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -87,13 +91,11 @@ public class Wallboard extends Controller {
         BambooServerConfiguration bambooServerConfiguration = PlayBasedServerConfiguration.newBambooServerConfiguration();
         BambooServer bambooServer = BambooServerFactory.create(bambooServerConfiguration);
 
-
-        //Get the list of scrumboards for the wallboard with a jira server
         List<ScrumBoard> scrumBoards;
 
         try {
             scrumBoards = new ScrumBoardBuilder().withIds(scrumBoardIds).with(jiraServer).build();
-        } catch (ScrumBoardException e) {
+        } catch (WallboardException e) {
             play.Logger.error("Error", e);
             throw new Exception(e);
         }

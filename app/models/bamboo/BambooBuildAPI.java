@@ -1,4 +1,6 @@
-package models;
+package models.bamboo;
+
+import models.UrlBuilder;
 
 /**
  * Created with IntelliJ IDEA.

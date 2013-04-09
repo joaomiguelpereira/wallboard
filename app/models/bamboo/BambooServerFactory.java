@@ -1,4 +1,4 @@
-package models;
+package models.bamboo;
 
 /**
  * Created with IntelliJ IDEA.

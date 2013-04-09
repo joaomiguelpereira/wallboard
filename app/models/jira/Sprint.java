@@ -1,4 +1,4 @@
-package models;
+package models.jira;
 
 import java.util.List;
 

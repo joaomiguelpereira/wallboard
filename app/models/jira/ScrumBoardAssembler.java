@@ -1,5 +1,6 @@
-package models;
+package models.jira;
 
+import models.AssemblingException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -15,7 +16,7 @@ public class ScrumBoardAssembler {
 
 
     public ScrumBoardAssembler(JiraServer jiraServer) {
-     this.jiraServer = jiraServer;
+        this.jiraServer = jiraServer;
     }
 
     public ScrumBoard assemble(String id) throws AssemblingException {
@@ -56,7 +57,7 @@ public class ScrumBoardAssembler {
         } catch (IOException e) {
             throw new AssemblingException(e);
         }
-        for (Sprint sprint : sprints ) {
+        for (Sprint sprint : sprints) {
             board.addSprint(sprint);
             assembleIssues(sprint);
         }
@@ -110,5 +111,5 @@ public class ScrumBoardAssembler {
         sprint.setCompletedIssues(completedIssues);
         sprint.setIncompletedIssues(incompletedIssues);
         sprint.setPuntedIssues(puntedIssues);
-   }
+    }
 }

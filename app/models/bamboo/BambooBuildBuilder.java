@@ -1,4 +1,4 @@
-package models;
+package models.bamboo;
 
 import java.util.ArrayList;
 import java.util.Arrays;

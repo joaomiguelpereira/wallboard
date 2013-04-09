@@ -1,6 +1,4 @@
-package models;
-
-import java.net.MalformedURLException;
+package models.jira;
 
 /**
  * Created with IntelliJ IDEA.
