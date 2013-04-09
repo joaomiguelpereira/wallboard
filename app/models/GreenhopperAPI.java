@@ -1,10 +1,7 @@
 package models;
 
-import play.Logger;
-import play.libs.F;
-import play.libs.WS;
-
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,40 +35,33 @@ public class GreenhopperAPI {
 
 
     public String getSprintReport(String boardId, String sprintId) {
-        return jiraServer.execute(new SprintreportUrlBuilder(sprintReportUrl, boardId, sprintId));
+        return jiraServer.execute(new SprintReportUrlBuilder(sprintReportUrl, boardId, sprintId));
     }
 
     public String getSprintsForBoard(String id) {
-        return jiraServer.execute(new UrlBuilder(sprintsUrl, id));
+        return jiraServer.execute(new UrlBuilder(sprintsUrl + id));
     }
 
 
     public String getBoard(String id) {
-        return jiraServer.execute(new UrlBuilder(rapidViewUrl, id));
+        return jiraServer.execute(new UrlBuilder(rapidViewUrl + id));
     }
 
 
-    private class SprintreportUrlBuilder extends UrlBuilder {
+    private class SprintReportUrlBuilder extends UrlBuilder {
 
         private String sprintId;
 
-        public SprintreportUrlBuilder(String sprintReportUrl, String boardId, String sprintId) {
-            super(sprintReportUrl,boardId);
-            this.sprintId = sprintId;
-        }
+        public SprintReportUrlBuilder(String sprintReportUrl, String boardId, String sprintId) {
+            super(sprintReportUrl);
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("rapidViewId", boardId);
+            parameters.put("sprintId", sprintId);
 
-        @Override
-        public String getUrl() {
-            return url;
-        }
-
-        @Override
-        public void setParameters(WS.WSRequestHolder wsreqHolder) {
-
-            wsreqHolder.setQueryParameter("rapidViewId",boardId);
-            wsreqHolder.setQueryParameter("sprintId",sprintId);
-
+            super.addParameters(parameters);
 
         }
+
+
     }
 }

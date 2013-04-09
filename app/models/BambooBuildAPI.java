@@ -9,6 +9,8 @@ package models;
  */
 public class BambooBuildAPI {
 
+    private static final String BUILT_REST_API = "rest/api/latest/build/";
+
     private final BambooServer bambooServer;
 
     public BambooBuildAPI(BambooServer bambooServer) {
@@ -16,11 +18,15 @@ public class BambooBuildAPI {
     }
 
     public String getBuild(String bambooPlanKey) {
-        return bambooServer.execute(new BambooBuildUrlBuilder(bambooPlanKey));
+        return bambooServer.execute(new BambooBuildUrlBuilder(bambooServer.getBambooServerUrl(), bambooPlanKey));
     }
 
     private class BambooBuildUrlBuilder extends UrlBuilder {
-        public BambooBuildUrlBuilder(String bambooPlanKey) {
+
+
+        public BambooBuildUrlBuilder(String bambooServerUrl, String bambooPlanKey) {
+            super(bambooServerUrl + BUILT_REST_API + bambooPlanKey + ".json");
+
         }
     }
 }

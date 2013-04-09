@@ -28,7 +28,7 @@ public class BambooBuildBuilder {
     }
 
     public List<BambooBuild> build() throws BambooBuildException {
-        if (bambooServer == null || this.bambooBuildKeys == null ) {
+        if (bambooServer == null || this.bambooBuildKeys == null) {
             throw new BambooBuildException("A bamboo server and bamboo plan keys are required");
         }
 
@@ -36,10 +36,10 @@ public class BambooBuildBuilder {
 
         List<BambooBuild> builds = new ArrayList<>();
 
-        for (String bambooPlanKey : this.bambooBuildKeys ) {
+        for (String bambooPlanKey : this.bambooBuildKeys) {
             builds.add(assembler.assemble(bambooPlanKey));
         }
 
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return builds;
     }
 }

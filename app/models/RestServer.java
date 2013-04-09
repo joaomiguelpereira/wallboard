@@ -17,9 +17,10 @@ public abstract class RestServer {
 
     private UsernamePasswordAuthentication authentication;
 
-    public RestServer(UsernamePasswordAuthentication athentication ) {
+    public RestServer(UsernamePasswordAuthentication athentication) {
         this.authentication = authentication;
     }
+
     public String execute(UrlBuilder urlBuilder) {
 
 
@@ -28,7 +29,7 @@ public abstract class RestServer {
         play.Logger.debug("Calling: " + urlBuilder.getUrl());
         WS.WSRequestHolder wsreqHolder = WS.url(urlBuilder.getUrl()).setAuth(authentication.getUserName(), authentication.getPassword());
 
-        urlBuilder.setParameters(wsreqHolder);
+        urlBuilder.buildRequestQueryString(wsreqHolder);
 
         F.Promise<WS.Response> promiseOfResult = wsreqHolder.get();
 

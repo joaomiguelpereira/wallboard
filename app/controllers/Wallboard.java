@@ -6,7 +6,6 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ public class Wallboard extends Controller {
 
     private static String[] scrumBoardIds = {"6", "5", "7", "8", "17", "2", "9", "10"};
 
-    private static String[] bambooPlanKeys = {"EFRAME-DEF"};
+    private static String[] bambooPlanKeys = {"EFRAME-DEF", "EFRAME-SONAR"};
 
     static {
     }
@@ -103,7 +102,7 @@ public class Wallboard extends Controller {
         List<BambooBuild> bambooBuilds = new BambooBuildBuilder().withPlanKey(bambooPlanKeys).with(bambooServer).build();
 
 
-        return new WallboardData(scrumBoards,bambooBuilds);
+        return new WallboardData(scrumBoards, bambooBuilds);
     }
 
 }

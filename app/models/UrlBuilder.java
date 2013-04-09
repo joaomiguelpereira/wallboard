@@ -2,6 +2,9 @@ package models;
 
 import play.libs.WS;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jpereira
@@ -10,25 +13,28 @@ import play.libs.WS;
  * To change this template use File | Settings | File Templates.
  */
 public class UrlBuilder {
-    protected String boardId;
     protected String url;
+    protected Map<String, String> parameters;
 
-    public UrlBuilder(String url, String id) {
-        this.url = url;
-        this.boardId = id;
-    }
-
-
-    public UrlBuilder() {
+    public UrlBuilder(String baseUrl) {
+        this.url = baseUrl;
+        this.parameters = new HashMap<String, String>();
     }
 
     public String getUrl() {
-        return this.url + this.boardId;
+        return this.url;
     }
 
+    public void buildRequestQueryString(WS.WSRequestHolder wsreqHolder) {
+        for (String key : this.parameters.keySet()) {
+            wsreqHolder.setQueryParameter(key, this.parameters.get(key));
 
-    public void setParameters(WS.WSRequestHolder wsreqHolder) {
+        }
 
+    }
+
+    public void addParameters(Map<String, String> parameters) {
+        this.parameters = parameters;
     }
 }
 
