@@ -17,7 +17,7 @@ public abstract class RestServer {
 
     private UsernamePasswordAuthentication authentication;
 
-    public RestServer(UsernamePasswordAuthentication athentication) {
+    public RestServer(UsernamePasswordAuthentication authentication) {
         this.authentication = authentication;
     }
 
@@ -34,7 +34,9 @@ public abstract class RestServer {
         F.Promise<WS.Response> promiseOfResult = wsreqHolder.get();
 
         WS.Response response = promiseOfResult.get(3L, TimeUnit.MINUTES); //block here
-        return response.getBody();
+        String body = response.getBody();
+        play.Logger.debug("Got response " + body);
+        return body;
 
     }
 }

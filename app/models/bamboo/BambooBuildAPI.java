@@ -11,7 +11,7 @@ import models.UrlBuilder;
  */
 public class BambooBuildAPI {
 
-    private static final String BUILT_REST_API = "rest/api/latest/build/";
+    private static final String BUILT_REST_API = "/rest/api/latest/build/";
 
     private final BambooServer bambooServer;
 

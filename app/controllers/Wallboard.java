@@ -48,7 +48,7 @@ public class Wallboard extends Controller {
         try {
             wallBoardData = getOrBuildWallboard();
         } catch (Exception e) {
-            return internalServerError(e.getLocalizedMessage());
+            return internalServerError(e.getMessage());
         }
 
         return ok(Json.toJson(wallBoardData));
